@@ -38,8 +38,18 @@ if(isset($_POST['Submit'])) {
 		echo "<br/><a href='javascript:self.history.back();' class='btn btn-primary'>Go Back</a>";
 	} else { 
 			
-		$result = mysqli_query($mysqli, "INSERT INTO users(name,age,email) VALUES('$name','$age','$email')");
-		
+		$sql ="INSERT INTO users(name,age,email) VALUES('$name','$age','$email')";
+		if(mysqli_query($mysqli, $sql)){
+			// Lấy ID đã chèn cuối cùng
+			$last_id = mysqli_insert_id($mysqli);
+			echo "<div class='alert alert-primary' role='alert'>Chèn bản ghi thành công. ID đã chèn cuối cùng là: " . $last_id . "</div>";
+		} else{
+			echo "<div class='alert alert-danger' role='alert'>ERROR: Không thể thực thi câu lệnh $sql. " . mysqli_error($mysqli) . "</div>";
+		}
+
+		// Đóng kết nối
+		mysqli_close($mysqli);
+
 		echo "<div class='alert alert-success' role='alert'>
 		Data added successfully.
 	  </div>";
